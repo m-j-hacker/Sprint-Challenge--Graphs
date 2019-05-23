@@ -4,6 +4,7 @@ from world import World
 
 import random
 
+# Custom Stack and Queue classes for stack and queue management
 class Stack():
     def __init__(self):
         self.stack = []
@@ -45,11 +46,21 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
+# Travel order priority - n, e, s, w
+# Notes - Dictionary for visited locations will look like this: { 0: [(3, 5), {'n': 1, 's': 5, 'e': 3, 'w': 7}], 1: [(3, 6), {'s': 0, 'n': 2}], 2: [(3, 7), {'s': 1}], 3: [(4, 5), {'w': 0, 'e': 4}], 4: [(5, 5), {'w': 3}], 5: [(3, 4), {'n': 0, 's': 6}], 6: [(3, 3), {'n': 5}], 7: [(2, 5), {'w': 8, 'e': 0}], 8: [(1, 5), {'e': 7}] } visited is a dictionary with roomID as key and a set containing a tuple for coords and dictionary for the exits
+# Step 1: Initiate a DFT to traverse as deep as possible
+# Step 2: Once there are no more nodes to hit, initiate a BFS to find the next unvisited exit
+# Step 3: These loops will repeat until there are no unvisited rooms.
+# We can use len(roomGraph) to calculate the number of rooms, once we've hit all the rooms we know there are no more unvisited ones
+# And the loop will stop
+
+# To execute our algorithms successfully, we need the following 
 
 # FILL THIS IN
         # DFT 
         # First we will take the starting vertex and push it
         # Into a newly made instance of Stack
+        # def DFT(self, s):
         # s = Stack()
         # s.push(starting_vertex)
         # # We need to store the visited points
@@ -67,9 +78,38 @@ player = Player("Name", world.startingRoom)
         #         for next_vert in self.vertices[vert]:
         #             s.push(next_vert)
 
+        # def BFS(self, s): 
+  
+        # # Mark all the vertices as not visited 
+        # visited = [False] * (len(self.graph)) 
+  
+        # # Create a queue for BFS 
+        # queue = [] 
+  
+        # # Mark the source node as  
+        # # visited and enqueue it 
+        # queue.append(s) 
+        # visited[s] = True
+  
+        # while queue: 
+  
+        #     # Dequeue a vertex from  
+        #     # queue and print it 
+        #     s = queue.pop(0) 
+        #     print (s, end = " ") 
+  
+        #     # Get all adjacent vertices of the 
+        #     # dequeued vertex s. If a adjacent 
+        #     # has not been visited, then mark it 
+        #     # visited and enqueue it 
+        #     for i in self.graph[s]: 
+        #         if visited[i] == False: 
+        #             queue.append(i) 
+        #             visited[i] = True
+
 # traversalPath = ['n', 's']
-# We will implement a breadth first traversal
-# 
+# We will implement a breadth first search after the depth first traversal for the next unknown exit
+# As our algorithm continues, we add the direction that we travel to the traversalPath list
 visited = set()
 
 
@@ -93,10 +133,10 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+player.currentRoom.printRoomDescription(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    else:
+        print("I did not understand that command.")
